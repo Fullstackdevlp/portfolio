@@ -19,7 +19,7 @@ const About = () => {
                   Holding a Bachelor's degree in Computer Science, I Specialize in building dynamic, responsive, and 
                   scalabel web applications using the MongoDB, Express.js, React.js, and Node.js.
                    </p>
-                <p>With 6 months of experience as a Junior web developer and a 3-month internship, I have honed my skills in developing
+                <p>With 2 years of experience as a Junior web developer and a 6-month internship, I have honed my skills in developing
                   efficient solutions and working in collaborative environments. I have successfully completed 6 projects
                   that showcase my ability to design, develop, and deploy my commitment to delivering high-quality work. </p>
                 <p>React.js is primary tool for crafting interactive and user-friendly interfaces, while Node.js and Express.js power
@@ -46,12 +46,12 @@ const About = () => {
       </div>
       <div className='about-achievements'>
         <div className='about-achievement'>
-          <h1>6</h1>
-          <p>MONTHS OF EXPERIENCE</p>
+          <h1>2</h1>
+          <p>Years OF EXPERIENCE</p>
         </div>
         <hr/>
         <div className='about-achievement'>
-          <h1>3</h1>
+          <h1>6</h1>
           <p>MONTH INTERNSHIP</p>
         </div>
         <hr />
