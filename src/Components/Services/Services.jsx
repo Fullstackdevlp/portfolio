@@ -1,33 +1,30 @@
-import React from 'react'
 import './Services.css'
-import theme_pattern from '../../assets/theme_pattern.svg'
 import service_data from '../../assets/service_data'
-import arrow_icon from '../../assets/arrow_icon.svg'
+
 const Services = () => {
   return (
-    <div id='services' className='services'>
-         <div className='services-title'>
-            <h1>My Projects</h1>
-            <img src={theme_pattern} alt="" />
-        </div>
-      <div className="services-container">
-        {service_data.map((service,index)=>{
-            return <div key={index} className="services-format">
-                <h3>{service.s_no}</h3>
-                <h2>{service.s_name}</h2>
-                <p>{service.s_desc}</p>
-                <a className='link' href={service.s_github}>Github Link</a>
-                <div className='services-readmore'>
-                    <p>Read More</p>
-                    <img src={arrow_icon} alt="" />
-                </div>
-            </div>
-        }) }
-
-
-        
+    <section id='services' className='section services'>
+      <div className='section-title reveal'>
+        <span>What I do</span>
+        <h2>My <span className='gradient-text'>Services</span></h2>
       </div>
-    </div>
+
+      <div className='services-container'>
+        {service_data.map((service, index) => {
+          const ServiceIcon = service.s_icon
+          return (
+            <div key={service.s_no} className='reveal' style={{ '--delay': `${index * 0.12}s` }}>
+              <div className='services-card'>
+                <span className='services-no'>{service.s_no}</span>
+                <div className='services-icon'><ServiceIcon size={26} /></div>
+                <h3>{service.s_name}</h3>
+                <p>{service.s_desc}</p>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </section>
   )
 }
 

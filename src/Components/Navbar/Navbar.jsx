@@ -1,35 +1,78 @@
-import React, { useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './Navbar.css'
-import hlogo from '../../assets/hlogo.jpg'
-import underline from '../../assets/nav_underline.svg'
 import AnchorLink from 'react-anchor-link-smooth-scroll'
-import menu_open  from '../../assets/menu_open.svg'
-import menu_close  from '../../assets/menu_close.svg'
-const Navbar = () => {
+import { MenuIcon, CloseIcon } from '../../assets/icons'
 
-  const [menu,setMenu] = useState("home");
-  const menuRef = useRef();
-const openMenu = ()=>{
- menuRef.current.style.right="0";
-}
-const closeMenu = ()=>{
-  menuRef.current.style.right="-350px";
- }
+const links = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'services', label: 'Services' },
+  { id: 'work', label: 'Projects' },
+  { id: 'contact', label: 'Contact' },
+]
+
+const Navbar = () => {
+  const [active, setActive] = useState('home')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    const onScroll = () => {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      setScrolled(window.scrollY > 30)
+      setProgress(maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0)
+
+      // Highlight the section currently on screen
+      let current = 'home'
+      links.forEach(({ id }) => {
+        const section = document.getElementById(id)
+        if (section && section.offsetTop - 150 <= window.scrollY) current = id
+      })
+      setActive(current)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <div className='navbar'>
-      <img className='logo' src={hlogo} alt="" />
-      <img src={menu_open} onClick={openMenu} alt="" className='nav-mob-open' />
-      <ul ref={menuRef} className='nav-menu'>
-        <img src={menu_close} onClick={closeMenu} alt="" className="nav-mob-close" />
-      <li><AnchorLink className='anchor-link' href='#home'><p onClick={()=>setMenu("home")}>Home</p></AnchorLink>{menu==="home"?<img src={underline} alt=''/>:<></>}</li>
-      <li><AnchorLink className='anchor-link' offset={50} href='#about'><p onClick={()=>setMenu("about")}>About Me</p></AnchorLink>{menu==="about"?<img src={underline} alt=''/>:<></>}</li>
-      <li><AnchorLink className='anchor-link' offset={50} href='#services'><p onClick={()=>setMenu("services")}>Services</p></AnchorLink>{menu==="services"?<img src={underline} alt=''/>:<></>}</li>
-      <li><AnchorLink className='anchor-link' offset={50} href='#work'><p onClick={()=>setMenu("work")}>Portfolio</p></AnchorLink>{menu==="work"?<img src={underline} alt=''/>:<></>}</li>
-      <li><AnchorLink className='anchor-link' offset={50} href='#contact'><p onClick={()=>setMenu("contact")}>Contact</p></AnchorLink>{menu==="contact"?<img src={underline} alt=''/>:<></>}</li>
-      </ul>
-      <div className='nav-connect'><AnchorLink className='anchor-link' offset={50} href='#contact'>Connect With Me</AnchorLink></div>
-    </div>
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <div className="nav-progress" style={{ width: `${progress}%` }} />
+      <div className="nav-inner">
+        <AnchorLink href='#home' className='nav-logo'>
+          Hiba<span className='gradient-text'>.</span>
+        </AnchorLink>
+
+        <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
+          <button className='nav-mob-close' onClick={() => setMenuOpen(false)} aria-label='Close menu'>
+            <CloseIcon size={28} />
+          </button>
+          <ul className='nav-menu'>
+            {links.map(({ id, label }) => (
+              <li key={id}>
+                <AnchorLink
+                  href={`#${id}`}
+                  offset={id === 'home' ? 0 : 70}
+                  className={active === id ? 'active' : ''}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {label}
+                </AnchorLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <AnchorLink className='btn btn-primary btn-small nav-connect' offset={70} href='#contact'>
+          Let&apos;s Talk
+        </AnchorLink>
+        <button className='nav-mob-open' onClick={() => setMenuOpen(true)} aria-label='Open menu'>
+          <MenuIcon size={28} />
+        </button>
+      </div>
+      {menuOpen && <div className='nav-backdrop' onClick={() => setMenuOpen(false)} />}
+    </nav>
   )
 }
 

@@ -1,82 +1,97 @@
-import React from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './About.css'
-import theme_pattern from '../../assets/theme_pattern.svg'
 import hiba from '../../assets/hiba.jpeg'
+
+const skillGroups = [
+  { title: 'Frontend', skills: ['HTML & CSS', 'JavaScript', 'React JS', 'Next.js', 'Vue.js', 'Angular', 'Tailwind', 'Material UI', 'Bootstrap'] },
+  { title: 'Backend', skills: ['Node.js', 'Express.js', 'MongoDB', 'PostgreSQL', 'SQL', 'Firebase'] },
+  { title: 'Mobile', skills: ['React Native', 'Expo'] },
+  { title: 'Tools & Cloud', skills: ['Git & GitHub', 'AWS', 'Netlify', 'Figma', 'Canva'] },
+]
+
+const stats = [
+  { value: 4, suffix: '', label: 'Years of experience' },
+  { value: 20, suffix: '+', label: 'Projects completed' },
+]
+
+// Counts up from 0 once the number scrolls into view
+/* eslint-disable-next-line react/prop-types */
+const CountUp = ({ value, suffix }) => {
+  const [count, setCount] = useState(0)
+  const ref = useRef()
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      observer.disconnect()
+      const start = performance.now()
+      const step = (now) => {
+        const progress = Math.min((now - start) / 1500, 1)
+        setCount(Math.round(value * (1 - Math.pow(1 - progress, 3))))
+        if (progress < 1) requestAnimationFrame(step)
+      }
+      requestAnimationFrame(step)
+    }, { threshold: 0.5 })
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [value])
+
+  return <h3 ref={ref} className='gradient-text'>{count}{suffix}</h3>
+}
+
 const About = () => {
   return (
-    <div id='about' className='about'>
-      <div className="about-title">
-        <h1>About me</h1>
-        <img src={theme_pattern} alt="" />
+    <section id='about' className='section about'>
+      <div className='section-title reveal'>
+        <span>Get to know me</span>
+        <h2>About <span className='gradient-text'>me</span></h2>
       </div>
-      <div className="about-sections">
-        <div className="about-left">
-        <img className='hipro' src={hiba} alt="" />
+
+      <div className='about-grid'>
+        <div className='about-photo reveal reveal-left'>
+          <img src={hiba} alt='Fathima Hiba Yoosaf' />
         </div>
-        <div className="about-right">
-            <div className="about-para">
-              <p>Hi there! I'm Fathima Hiba Yoosaf, a Full Stack Developer with a specialization in the MERN Stack. 
-   Holding a Bachelor's degree in Computer Science, I specialize in building dynamic, responsive, and 
-   scalable web and mobile applications using MongoDB, Express.js, React.js, Node.js, and React Native.</p>
 
-<p>With 3 years of experience as a Senior Web Developer, I have honed my skills in developing 
-   efficient solutions and collaborating in team environments. I have successfully completed more than 10 projects 
-   that showcase my ability to design, develop, and deploy applications while delivering high-quality work.</p>
+        <div className='about-text reveal reveal-right'>
+          <p>
+            Hi there! I&apos;m <strong>Fathima Hiba Yoosaf</strong>, a Full Stack Developer specializing in the
+            MERN stack, with a Bachelor&apos;s degree in Computer Science. I build dynamic, responsive and scalable
+            web and mobile applications with MongoDB, Express.js, React.js, Node.js and React Native.
+          </p>
+          <p>
+            With <strong>4 years of experience as a Full Stack Developer</strong> and more than 20 completed projects,
+            I design, develop and deploy applications end to end. I also work with MySQL and PostgreSQL, and ship
+            to AWS, Netlify and Expo.
+          </p>
+          <p>
+            I&apos;m currently focused on full-stack and mobile development, contributing to innovative projects
+            that solve real-world problems.
+          </p>
 
-<p>React.js and React Native are my primary tools for crafting interactive and user-friendly interfaces 
-   for web and mobile platforms, while Node.js and Express.js power server-side functionalities. 
-   I am also experienced with relational databases like MySQL and PostgreSQL, complementing my stack for 
-   robust and scalable data management.</p>
+          <div className='skill-groups'>
+            {skillGroups.map((group) => (
+              <div key={group.title} className='skill-group'>
+                <h4>{group.title}</h4>
+                <div className='skill-tags'>
+                  {group.skills.map((skill) => <span key={skill} className='tag'>{skill}</span>)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
-<p>For deployment and cloud services, I leverage tools such as Expo for mobile apps and platforms like 
-   AWS and Netlify to ensure seamless delivery and performance.</p>
-
-<p>Currently, I am focused on advancing my career in full-stack and mobile development, contributing 
-   to innovative projects that solve real-world challenges.</p>
+      <div className='about-stats'>
+        {stats.map((stat, index) => (
+          <div key={stat.label} className='reveal' style={{ '--delay': `${index * 0.15}s` }}>
+            <div className='about-stat'>
+              <CountUp value={stat.value} suffix={stat.suffix} />
+              <p>{stat.label}</p>
             </div>
-            <div className='about-skills'>
-              <div className='about-skill'> <p>HTML & CSS</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>React JS</p><hr style={{width:"70%"}} />   </div>
-                    <div className='about-skill'> <p>Next.js</p><hr style={{width:"70%"}} />   </div>
-                          <div className='about-skill'> <p>Vue.js</p><hr style={{width:"70%"}} />   </div>
-                                <div className='about-skill'> <p>Angular</p><hr style={{width:"70%"}} />   </div>
-                                      <div className='about-skill'> <p>React Native</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Javascript</p><hr style={{width:"70%"}} />   </div>
-                    <div className='about-skill'> <p>Material UI</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Bootstarp</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Tailwind</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Node.js</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Express.js</p><hr style={{width:"70%"}} />   </div>
-                    <div className='about-skill'> <p>PostgreSQL</p><hr style={{width:"70%"}} />   </div>
-                          <div className='about-skill'> <p>SQL</p><hr style={{width:"70%"}} />   </div>
-                                <div className='about-skill'> <p>Firebase</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>MongoDB</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Git & Github</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Figma</p><hr style={{width:"70%"}} />   </div>
-              <div className='about-skill'> <p>Canva</p><hr style={{width:"70%"}} />   </div>
-                 
-            </div>
-        </div>
+          </div>
+        ))}
       </div>
-      <div className='about-achievements'>
-        <div className='about-achievement'>
-          <h1>3</h1>
-          <p>Years OF EXPERIENCE</p>
-        </div>
-        <hr/>
-        <div className='about-achievement'>
-          <h1>6</h1>
-          <p>MONTH INTERNSHIP</p>
-        </div>
-        <hr />
-        <div className='about-achievement'>
-          <h1>10+</h1>
-          <p>PROJECTS  COMPLETED</p>
-        </div>
-      
-        
-      </div>
-    </div>
+    </section>
   )
 }
 
