@@ -7,7 +7,7 @@ const MyWork = () => {
     <section id='work' className='section mywork'>
       <div className='section-title reveal'>
         <span>Portfolio</span>
-        <h2>My latest <span className='gradient-text'>projects</span></h2>
+        <h2>My <span className='gradient-text'>Projects</span></h2>
       </div>
 
       <div className='mywork-container'>
